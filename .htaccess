@@ -1,0 +1,9 @@
+
+Options +FollowSymlinks
+RewriteEngine On
+
+# Prevent Directory listings
+Options -Indexes
+
+RewriteCond %{REQUEST_URI} !assets/
+RewriteRule ^([^?]*) seven.php?$1 [L,QSA]

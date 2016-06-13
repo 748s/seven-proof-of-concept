@@ -1,0 +1,28 @@
+{% include 'includes/header.html.twig' %}
+
+<div class="col-sm-6 col-sm-offset-3">
+  {% include 'includes/message.html.twig' %}
+  <table class="table table-striped tableBorderless">
+    <thead></thead>
+    <tbody>
+      <tr>
+        <td class="text-right">First Name</td>
+        <th>{{ user.firstName }}</th>
+      </tr>
+      <tr>
+        <td class="text-right">Last Name</td>
+        <th>{{ user.lastName }}</th>
+      </tr>
+      <tr>
+        <td class="text-right">Email Address</td>
+        <th>{{ user.emailAddress }}</th>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <a class="pull-right btn btnBoxShadow gradientOrange colorWhite" href="/users/edit/{{ user.id }}"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
+    <a class="btn btnBoxShadow gradientGray colorWhite" href="/users"><i class="glyphicon glyphicon-arrow-left"></i> Back</a>
+  </div>
+</div>
+
+{% include 'includes/footer.html.twig' %}

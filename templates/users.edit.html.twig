@@ -1,0 +1,26 @@
+{% include 'includes/header.html.twig' %}
+
+<div class="col-sm-6 col-sm-offset-3">
+  {% include 'includes/message.html.twig' %}
+  <form method="post">
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" class="form-control" name="firstName" value="{{ user.firstName }}" />
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" class="form-control" name="lastName" value="{{ user.lastName }}" />
+    </div>
+    <div class="form-group">
+      <label for="emailAddress">Email Address</label>
+      <input type="email" class="form-control" name="emailAddress" value="{{ user.emailAddress }}" />
+    </div>
+    <div class="form-group text-right">
+      {% if user.id != session.id %}<a class="btn btnBoxShadow gradientRed colorWhite" href="/users/delete/{{ user.id }}"><i class="glyphicon glyphicon-remove"></i> Delete</a>{% endif %}
+      <button type="submit" class="btn btnBoxShadow gradientBlue colorWhite">{% if user.id %}Save{% else %}Add User{% endif %}</button>
+      <a class="pull-left colorGray" style="margin-top: 5px;"href="/users"><i class="glyphicon glyphicon-remove-sign"></i> Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% include 'includes/footer.html.twig' %}

@@ -1,0 +1,125 @@
+
+/*    BLUE  */
+.alertBlue {
+    background-color: #46d;
+    border-color: #46d;
+    color: #fff;
+}
+.backgroundBlue {
+    background: #46d;
+}
+.gradientBlue {
+    background: #46d;
+    background: -moz-linear-gradient(top, #46d, #24b);
+    background:-webkit-linear-gradient(top, #46d, #24b);
+    background:-o-linear-gradient(top, #46d, #24b);
+    background: linear-gradient(top, #46d, #24b);
+}
+.colorBlue {
+    color: #46d;
+}
+.messageBlue {
+    background: #46d;
+    color: #fff;
+}
+
+/*    GRAY  */
+.backgroundGray {
+    background: #777;
+}
+.gradientGray {
+    background: #777;
+    background: -moz-linear-gradient(top, #777, #555);
+    background:-webkit-linear-gradient(top, #777, #555);
+    background:-o-linear-gradient(top, #777, #555);
+    background: linear-gradient(top, #777, #555);
+}
+.colorGray {
+    color: #777;
+}
+
+
+/*    GREEN  */
+.alertGreen {
+    background-color: #0c0;
+    border-color: #0c0;
+    color: #fff;
+    }
+.backgroundGreen {
+    background: #0c0;
+}
+.gradientGreen {
+    background: #0c0;
+    background: -moz-linear-gradient(top, #0c0, #0a2);
+    background:-webkit-linear-gradient(top, #0c0, #0a2);
+    background:-o-linear-gradient(top, #0c0, #0a2);
+    background: linear-gradient(top, #0c0, #0a2);
+}
+.colorGreen {
+    color: #0c0;
+}
+
+
+/*    ORANGE  */
+.backgroundOrange {
+    background: #fa0;
+}
+.gradientOrange {
+    background: #fa0;
+    background: -moz-linear-gradient(top, #fa0, #d80);
+    background:-webkit-linear-gradient(top, #fa0, #d80);
+    background:-o-linear-gradient(top, #fa0, #d80);
+    background: linear-gradient(top, #fa0, #d80);
+}
+
+.colorOrange {
+    color: #fa0;
+}
+
+/*    RED  */
+.alertRed {
+    background-color: #f00;
+    border-color: #f00;
+    color: #fff;
+}
+.backgroundRed {
+    background: #f00;
+}
+.gradientRed {
+    background: #f00;
+    background: -moz-linear-gradient(top, #f00, #d00);
+    background:-webkit-linear-gradient(top, #f00, #d00);
+    background:-o-linear-gradient(top, #f00, #d00);
+    background: linear-gradient(top, #f00, #d00);
+}
+.colorRed {
+    color: #f00;
+}
+
+.messageRed {
+    background: #f00;
+    color: #fff;
+}
+
+
+/*    WHITE */
+.backgroundWhite {
+    background: #fff;
+}
+.colorWhite {
+    color: #fff;
+}
+a.colorWhite:hover,
+button.colorWhite:hover {
+    color: #eee;
+}
+a.colorWhite:active,
+button.colorWhite:active {
+    color: #fff;
+}
+
+
+table.tableBorderless td,
+table.tableBorderless th {
+    border: none !important;
+}

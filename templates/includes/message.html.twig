@@ -1,0 +1,7 @@
+
+{% if message %}
+  <div class="alert {{ message.cssClass }}{% if message.dismissable %} alert-dismissable{% endif %}">
+    {{ message.content|raw }}
+    {% if message.dismissable %}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{% endif %}
+  </div>
+{% endif %}

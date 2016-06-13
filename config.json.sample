@@ -1,0 +1,18 @@
+{
+    "environment": "development",
+    "timezone": "America/New_York",
+    "database": {
+        "credentials": {
+            "username": "",
+            "password": ""
+        },
+        "dataSource": {
+            "hostname": "localhost",
+            "database": "seven"
+        },
+        "timestampedFields": {
+            "created": "created",
+            "updated": "updated"
+        }
+    }
+}
