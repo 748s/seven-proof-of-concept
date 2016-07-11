@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Arguments\UserId;
 use Seven\Controller;
 use Seven\FormUtility;
 
@@ -9,11 +10,11 @@ class UsersController extends Controller
 {
     public $requireLogin = true;
 
-    public function getPermission($method, $argument)
+    public function getPermission($method, $arguments)
     {
         switch($method) {
             case 'deleteAction':
-            return ($_SESSION['id'] != $argument) ? true : false;
+            return ($_SESSION['id'] != $arguments['userId']) ? true : false;
             break;
             default:
             return true;
@@ -30,10 +31,10 @@ class UsersController extends Controller
         ));
     }
 
-    public function getAction($id)
+    public function getAction(UserId $userId)
     {
         echo $this->loadTwig()->render('users.get.html.twig', array(
-            'user' => $this->DB->getOneById('users', $id)
+            'user' => $this->DB->getOneById($userId)
         ));
     }
 
@@ -42,9 +43,9 @@ class UsersController extends Controller
         $this->formView();
     }
 
-    public function editAction($id)
+    public function editAction(UserId $userId)
     {
-        $user = $this->DB->getOneById('users', $id);
+        $user = $this->DB->getOneById($userId);
         $this->formView($user);
     }
 
@@ -55,7 +56,7 @@ class UsersController extends Controller
         ));
     }
 
-    public function postAction($id)
+    public function postAction(UserId $userId = null)
     {
         $FormUtility = new FormUtility();
         $FormUtility->isCleanString('firstName', 'First Name is Required');
@@ -66,17 +67,17 @@ class UsersController extends Controller
             $this->setFormErrorMessage($formErrors);
             $this->formView($user);
         } else {
-            $this->DB->put('users', $user, $id);
-            $message = ($id) ? "You just updated $user[firstName] $user[lastName]&rsquo;s record" : "You just added $user[firstName] $user[lastName] as a user";
+            $this->DB->put('users', $user, $userId);
+            $message = ($userId) ? "You just updated $user[firstName] $user[lastName]&rsquo;s record" : "You just added $user[firstName] $user[lastName] as a user";
             $this->setMessage('messageBlue', $message, true);
             header("Location: /users");
         }
     }
 
-    public function deleteAction($id)
+    public function deleteAction(UserId $userId)
     {
-        $user = $this->DB->getOneById('users', $id);
-        $this->DB->deleteOneById('users', $id);
+        $user = $this->DB->getOneById($userId);
+        $this->DB->deleteOneById($userId);
         $this->setMessage('messageBlue', "You just deleted $user[firstName] $user[lastName]", true);
         header("Location: /users");
     }

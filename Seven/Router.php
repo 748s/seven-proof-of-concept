@@ -6,8 +6,9 @@ class Router
 {
     private $fqClassName = null;
     private $methodName = null;
-    private $methodArgument = null;
     private $segments = array();
+    private $arguments = array();
+    private $Controller;
 
     public function route()
     {
@@ -19,13 +20,40 @@ class Router
             $this->fqClassName = (class_exists('\App\Extensions\ControllerExtension')) ? '\App\Extensions\ControllerExtension' : '\Seven\Controller';
             $this->methodName = '_404Action';
         }
-        $Controller = new $this->fqClassName($this->segments);
-        if(property_exists($this->fqClassName, 'requireLogin') && $Controller->requireLogin === true && !$Controller->isLoggedIn()) {
-            $Controller->_401Action($this->fqClassName);
-        } elseif(method_exists($this->fqClassName, 'getPermission') && !$Controller->getPermission($this->methodName, $this->methodArgument)) {
-            $Controller->_403Action($this->fqClassName);
+        $this->Controller = new $this->fqClassName();
+        if(property_exists($this->fqClassName, 'requireLogin') && $this->Controller->requireLogin === true && !$this->Controller->isLoggedIn()) {
+            $this->Controller->_401Action($this->fqClassName);
+        } elseif(!$this->verifyParams()) {
+            $this->Controller->_404Action();
+        } elseif(method_exists($this->fqClassName, 'getPermission') && !$this->Controller->getPermission($this->methodName,$this->arguments)) {
+            $this->Controller->_403Action($this->fqClassName);
         } else {
-            $Controller->{$this->methodName}($this->methodArgument);
+            call_user_func_array(array($this->Controller, $this->methodName), $this->arguments);
+        }
+    }
+
+    private function verifyParams()
+    {
+        $Ref = new \ReflectionMethod($this->fqClassName, $this->methodName);
+        if(!(count($this->segments) >= $Ref->getNumberOfRequiredParameters() && count($this->segments) <= $Ref->getNumberOfParameters())) {
+            return false;
+        } else {
+            $params = $Ref->getParameters();
+            foreach($params as $index => $param) {
+                if($paramClass = $param->getClass()) {
+                    if(!($param->isOptional() && !$this->segments[$index])) {
+                        $ArgumentClass = $this->Controller->loadArgument($paramClass->name, $this->segments[$index]);
+                        if(!$ArgumentClass->entityExists()) {
+                            return false;
+                        } else {
+                            $this->arguments[$param->getName()] = $ArgumentClass;
+                        }
+                    }
+                } else {
+                    $this->arguments[$param->getName()] = $this->segments[$index];
+                }
+            }
+            return true;
         }
     }
 
@@ -72,22 +100,17 @@ class Router
             if($this->segments[0] === 'edit' || $this->segments[0] === 'add') {
                 array_shift($this->segments);
             }
-            $this->methodArgument = ($this->segments[0]) ? array_shift($this->segments) : null;
         } elseif($this->segments[0] === 'edit' && method_exists($this->fqClassName, 'editAction')) {
             $this->methodName = 'editAction';
             array_shift($this->segments);
-            $this->methodArgument = ($this->segments[0]) ? array_shift($this->segments) : null;
         } elseif($this->segments[0] === 'add' && method_exists($this->fqClassName, 'addAction')) {
             $this->methodName = 'addAction';
             array_shift($this->segments);
-            $this->methodArgument = ($this->segments[0]) ? array_shift($this->segments) : null;
         } elseif($this->segments[0] === 'delete' && method_exists($this->fqClassName, 'deleteAction')) {
             $this->methodName = 'deleteAction';
             array_shift($this->segments);
-            $this->methodArgument = ($this->segments[0]) ? array_shift($this->segments) : null;
         } elseif($this->segments[0] && method_exists($this->fqClassName, 'getAction')) {
             $this->methodName = 'getAction';
-            $this->methodArgument = array_shift($this->segments);
         } elseif(method_exists($this->fqClassName, 'defaultAction')) {
             $this->methodName = 'defaultAction';
         }

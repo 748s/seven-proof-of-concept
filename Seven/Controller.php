@@ -5,16 +5,14 @@ namespace Seven;
 class Controller
 {
     protected $config;
-    protected $segments;
     protected $DB;
     protected $Permissions;
     protected $Twig;
 
-    public function __construct($segments)
+    public function __construct()
     {
         global $config;
         $this->config = $config;
-        $this->segments = $segments;
         $this->loadDB();
         $this->loadPermissions();
     }
@@ -93,5 +91,10 @@ class Controller
         } else {
             return "\Seven\\$name";
         }
+    }
+
+    public function loadArgument($className, $var)
+    {
+        return new $className($this->DB, $var);
     }
 }

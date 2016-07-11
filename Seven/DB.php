@@ -133,14 +133,27 @@ class Db
         }
     }
 
-    public function getOneById($tableName, $id)
+    public function getOneById($varOne, $varTwo = null)
     {
-        return $this->selectOne("SELECT * FROM $tableName WHERE {$this->primaryKeys[$tableName]} = :{$this->primaryKeys[$tableName]}", array(":{$this->primaryKeys[$tableName]}" => $id));
+        if(is_object($varOne) && array_pop(explode('\\', get_parent_class($varOne))) == 'Argument') {
+            return $this->selectOne("SELECT * FROM $varOne->tableName WHERE {$this->primaryKeys[$varOne->tableName]} = :{$this->primaryKeys[$varOne->tableName]}", array(":{$this->primaryKeys[$varOne->tableName]}" => $varOne));
+        } else {
+            return $this->selectOne("SELECT * FROM $varOne WHERE {$this->primaryKeys[$varOne]} = :{$this->primaryKeys[$varOne]}", array(":{$this->primaryKeys[$varOne]}" => $varTwo));
+        }
     }
 
-    public function deleteOneById($tableName, $id)
+    public function deleteOneById($varOne, $varTwo = null)
     {
-      return $this->update("DELETE FROM $tableName WHERE {$this->primaryKeys[$tableName]} = :{$this->primaryKeys[$tableName]} LIMIT 1", array(":{$this->primaryKeys[$tableName]}" => $id));
+        if(is_object($varOne) && array_pop(explode('\\', get_parent_class($varOne))) == 'Argument') {
+            return $this->update("DELETE FROM $varOne->tableName WHERE {$this->primaryKeys[$varOne->tableName]} = :{$this->primaryKeys[$varOne->tableName]}", array(":{$this->primaryKeys[$varOne->tableName]}" => $varOne));
+        } else {
+            return $this->update("DELETE FROM $varOne WHERE {$this->primaryKeys[$varOne]} = :{$this->primaryKeys[$varOne]} LIMIT 1", array(":{$this->primaryKeys[$varOne]}" => $varTwo));
+        }
+    }
+
+    public function existsById($tableName, $id)
+    {
+        return $this->selectOne("SELECT EXISTS(SELECT * FROM {$tableName} WHERE {$this->primaryKeys[$tableName]} = :id LIMIT 1) AS e", [':id' => $id])['e'];
     }
 }
 
